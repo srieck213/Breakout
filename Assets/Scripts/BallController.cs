@@ -11,6 +11,9 @@ public class BallController : MonoBehaviour
     public float ballForce;
     public Vector3 startPosition;
     public GameMaster gameMaster; 
+    public float minimumSpeed = 5.5f;
+    public float maximumSpeed = 5.7f;
+    public GameObject thePaddle;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +31,21 @@ public class BallController : MonoBehaviour
             randomNumber = Random.Range(0, startDirections.Length);
             ballRigidbody.AddForce(startDirections[randomNumber] * ballForce, ForceMode2D.Impulse);
             ballLaunched = true;
+        }
 
+        if(!ballLaunched){
+            transform.position = new Vector2(thePaddle.transform.position.x, transform.position.y);            
+        }
+
+    }
+
+    void LateUpdate(){
+        if(ballRigidbody.velocity.magnitude < minimumSpeed){
+            Debug.Log("Velocity is " + ballRigidbody.velocity.magnitude + " increasing");
+            ballRigidbody.velocity = ballRigidbody.velocity.normalized * (maximumSpeed - 0.1f);
+        }else if(ballRigidbody.velocity.magnitude > maximumSpeed){
+            Debug.Log("Velocity is " + ballRigidbody.velocity.magnitude + " decreasing");
+            ballRigidbody.velocity = ballRigidbody.velocity.normalized * (minimumSpeed + 0.1f);
         }
     }
 
