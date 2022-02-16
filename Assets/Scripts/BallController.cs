@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BallController : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class BallController : MonoBehaviour
 
     }
 
+    void Awake(){
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;        
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -41,10 +46,10 @@ public class BallController : MonoBehaviour
 
     void LateUpdate(){
         if(ballRigidbody.velocity.magnitude < minimumSpeed){
-            Debug.Log("Velocity is " + ballRigidbody.velocity.magnitude + " increasing");
+            //Debug.Log("Velocity is " + ballRigidbody.velocity.magnitude + " increasing");
             ballRigidbody.velocity = ballRigidbody.velocity.normalized * (maximumSpeed - 0.1f);
         }else if(ballRigidbody.velocity.magnitude > maximumSpeed){
-            Debug.Log("Velocity is " + ballRigidbody.velocity.magnitude + " decreasing");
+            //Debug.Log("Velocity is " + ballRigidbody.velocity.magnitude + " decreasing");
             ballRigidbody.velocity = ballRigidbody.velocity.normalized * (minimumSpeed + 0.1f);
         }
     }
@@ -59,4 +64,12 @@ public class BallController : MonoBehaviour
             ballLaunched = false;
         }
     }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("Scene Loaded");
+        GameObject gObject = GameObject.FindGameObjectsWithTag("GameMaster")[0];
+        gameMaster = gObject.GetComponent<GameMaster>();
+    }
+
 }

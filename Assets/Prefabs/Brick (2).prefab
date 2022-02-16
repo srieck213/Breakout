@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3274814481194582324}
   m_Layer: 0
   m_Name: Brick (2)
-  m_TagString: Untagged
+  m_TagString: Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,4 +127,6 @@ MonoBehaviour:
   maxHits: 2
   brickSprite: {fileID: 0}
   brickValue: 1
+  doesExplode: 0
+  blastRadius: 5
   gameMaster: {fileID: 0}

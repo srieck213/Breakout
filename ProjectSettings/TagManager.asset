@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - DefeatZone
+  - Ball
+  - Brick
+  - GameMaster
   layers:
   - Default
   - TransparentFX
