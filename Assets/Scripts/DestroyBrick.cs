@@ -66,9 +66,9 @@ public class DestroyBrick : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         //GameObject.FindGameObjectWithTag
-                Debug.Log("Scene Loaded2");
+        //Debug.Log("Scene Loaded2");
         GameObject gObject = GameObject.FindGameObjectWithTag("GameMaster");
-        Debug.Log("gameObject " + gObject.name);
+        //Debug.Log("gameObject " + gObject.name);
 
         gameMaster = gObject.GetComponent<GameMaster>();
 

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameMaster : MonoBehaviour
 {
     public float playerPoints;
-    public float maxLevelPoints;
+    public float[] levelPoints;
     public float playerLives = 3;
     public int currentLevel = 1;
     
@@ -24,7 +24,7 @@ public class GameMaster : MonoBehaviour
             SceneManager.LoadScene("LoseScene");
         }
 
-        if (playerPoints >= maxLevelPoints)
+        if (playerPoints >= levelPoints[currentLevel - 1])
         {
             if(currentLevel == 1){
                 currentLevel++;
@@ -35,7 +35,18 @@ public class GameMaster : MonoBehaviour
                 currentLevel++;
                 playerPoints = 0;
                 SceneManager.LoadScene("Level3");
-            }else{
+            }
+            else if(currentLevel == 3){
+                currentLevel++;
+                playerPoints = 0;
+                SceneManager.LoadScene("Level4");
+            }
+            else if(currentLevel == 4){
+                currentLevel++;
+                playerPoints = 0;
+                SceneManager.LoadScene("Level5");
+            }
+            else{
                 SceneManager.LoadScene("WinScene");
             }
         }
