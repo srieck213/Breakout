@@ -5,11 +5,11 @@ using UnityEngine;
 public class Portal : MonoBehaviour
 {
     public GameObject portalEnd;
-    private PolygonCollider2D myCollider;
+    private BoxCollider2D myCollider;
     // Start is called before the first frame update
     void Start()
     {
-        myCollider = portalEnd.GetComponent<PolygonCollider2D>();
+        myCollider = portalEnd.GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame

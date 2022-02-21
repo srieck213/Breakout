@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI; 
 
 public class GameMaster : MonoBehaviour
 {
@@ -9,16 +10,25 @@ public class GameMaster : MonoBehaviour
     public float[] levelPoints;
     public float playerLives = 3;
     public int currentLevel = 1;
+    public Text livesText;
+    public Text scoreText;
+
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        livesText.text = "Lives: " + playerLives;
+        scoreText.text = "Score: " + playerPoints;
     }
 
     // Update is called once per frame
     void Update()
     {
+        {
+            livesText.text = "Lives: " + playerLives;
+            scoreText.text = "Score: " + playerPoints;
+        }
+        
         if (playerLives <= 0)
         {
             SceneManager.LoadScene("LoseScene");
@@ -49,7 +59,9 @@ public class GameMaster : MonoBehaviour
             else{
                 SceneManager.LoadScene("WinScene");
             }
+           
         }
+        
     }
 
     void Awake()
@@ -62,5 +74,6 @@ public class GameMaster : MonoBehaviour
         }
 
         DontDestroyOnLoad(this.gameObject);
+        
     }    
 }
