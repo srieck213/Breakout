@@ -39,7 +39,9 @@ public class DestroyBrick : MonoBehaviour
 
         if (numberOfHits >= maxHits)
         {
-            gameMaster.playerPoints = gameMaster.playerPoints + brickValue;    
+            gameMaster.playerPoints = gameMaster.playerPoints + brickValue;  
+            gameMaster.playerScore = gameMaster.playerScore + brickValue;
+
             //Debug.Log("player points " + gameMaster.playerPoints);        
             if(doesExplode){
                 GameObject[] brickList = GameObject.FindGameObjectsWithTag ("Brick");
