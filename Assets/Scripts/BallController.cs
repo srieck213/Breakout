@@ -14,13 +14,14 @@ public class BallController : MonoBehaviour
     public GameMaster gameMaster; 
     public float minimumSpeed = 5.5f;
     public float maximumSpeed = 5.7f;
+    public float lastCollision;
     public GameObject thePaddle;
 
     // Start is called before the first frame update
     void Start()
     {
         ballRigidbody = GetComponent<Rigidbody2D>();
-
+        lastCollision = Time.realtimeSinceStartup;        
     }
 
     void Awake(){
@@ -36,6 +37,7 @@ public class BallController : MonoBehaviour
             randomNumber = Random.Range(0, startDirections.Length);
             ballRigidbody.AddForce(startDirections[randomNumber] * ballForce, ForceMode2D.Impulse);
             ballLaunched = true;
+            gameMaster.startPowerupSpawner();  
         }
 
         if(!ballLaunched){
@@ -45,12 +47,16 @@ public class BallController : MonoBehaviour
     }
 
     void LateUpdate(){
-        if(ballRigidbody.velocity.magnitude < minimumSpeed){
-            //Debug.Log("Velocity is " + ballRigidbody.velocity.magnitude + " increasing");
-            ballRigidbody.velocity = ballRigidbody.velocity.normalized * (maximumSpeed - 0.1f);
-        }else if(ballRigidbody.velocity.magnitude > maximumSpeed){
-            //Debug.Log("Velocity is " + ballRigidbody.velocity.magnitude + " decreasing");
-            ballRigidbody.velocity = ballRigidbody.velocity.normalized * (minimumSpeed + 0.1f);
+        float diff = Time.realtimeSinceStartup - this.lastCollision;
+        if(diff > 0.1){
+            //only adjust speed if not recent collision
+            if(ballRigidbody.velocity.magnitude < minimumSpeed){
+                //Debug.Log("Velocity is " + ballRigidbody.velocity.magnitude + " increasing");
+                ballRigidbody.velocity = ballRigidbody.velocity.normalized * (maximumSpeed - 0.1f);
+            }else if(ballRigidbody.velocity.magnitude > maximumSpeed){
+                //Debug.Log("Velocity is " + ballRigidbody.velocity.magnitude + " decreasing");
+                ballRigidbody.velocity = ballRigidbody.velocity.normalized * (minimumSpeed + 0.1f);
+            }
         }
     }
 
@@ -62,7 +68,8 @@ public class BallController : MonoBehaviour
             gameMaster.playerLives = gameMaster.playerLives-1;
             transform.position = startPosition;
             ballLaunched = false;
-        }
+            gameMaster.stopPowerupSpawner();              
+        }        
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

@@ -35,7 +35,14 @@ public class DestroyBrick : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         numberOfHits++;
-        brickSprite.color = Color.magenta;
+        if(numberOfHits < maxHits){
+            brickSprite.color = Color.magenta;
+        }
+        if(other.gameObject.CompareTag("Ball")){
+            BallController bControl = other.gameObject.GetComponent<BallController>();            
+            bControl.lastCollision = Time.realtimeSinceStartup;
+            //Debug.Log("Last Collision: " + bControl.lastCollision);
+        }
 
         if (numberOfHits >= maxHits)
         {
@@ -60,9 +67,13 @@ public class DestroyBrick : MonoBehaviour
                     }                    
                 }                
             }else{
-                Destroy(this.gameObject);
+                Invoke("DestroyDelayed", 0.05f);
             }
         }
+    }
+
+    void DestroyDelayed(){
+        Destroy(this.gameObject);
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

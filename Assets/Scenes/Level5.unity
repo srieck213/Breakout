@@ -3108,6 +3108,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Paddle
       objectReference: {fileID: 0}
+    - target: {fileID: 7582688935089562984, guid: 2d8cfd1eab4876448b3e4893470e0fd9, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 7582688935089562989, guid: 2d8cfd1eab4876448b3e4893470e0fd9, type: 3}
       propertyPath: m_RootOrder
       value: 12

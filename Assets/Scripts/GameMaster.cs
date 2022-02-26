@@ -15,13 +15,16 @@ public class GameMaster : MonoBehaviour
     public Text livesText;
     public Text scoreText;
     public Text endLevelText;
+    public float powerupDelay = 1.0f;
+    public GameObject[] powerupPrefabs;
+    private IEnumerator spawner;
+    private bool wonGame = false;
 
-    
     // Start is called before the first frame update
     void Start()
     {
         livesText.text = "Lives: " + playerLives;
-        scoreText.text = "Score: " + playerScore;
+        scoreText.text = "Score: " + playerScore;    
         endLevelText.enabled = false;
     }
 
@@ -38,7 +41,7 @@ public class GameMaster : MonoBehaviour
             SceneManager.LoadScene("LoseScene");
         }
 
-        if (playerPoints >= levelPoints[currentLevel - 1])
+        if (!wonGame && playerPoints >= levelPoints[currentLevel - 1])
         {
             endLevelText.enabled = true;
             playerPoints = 0;
@@ -62,11 +65,12 @@ public class GameMaster : MonoBehaviour
             }
             else{
                 SceneManager.LoadScene("WinScene");
+                wonGame = true;
             }
-
+            stopPowerupSpawner();
             Invoke("IncrementLevel", 3);           
         }
-        
+
     }
 
     void IncrementLevel(){
@@ -88,6 +92,22 @@ public class GameMaster : MonoBehaviour
 
     }
 
+    IEnumerator SpawnPowerup(){
+        while(true){
+            yield return new WaitForSeconds(powerupDelay);
+            powerupDelay = Random.Range(1.0f, 3.0f);
+            int powerupIndex = 0;
+            if(powerupPrefabs.Length > 1){ 
+                powerupIndex = Random.Range(0, powerupPrefabs.Length - 1);
+            }
+            float randomX = Random.Range(-10.0f, 10.0f);
+            string powerupName = powerupPrefabs[powerupIndex].name;            
+            GameObject myPowerup = Instantiate(powerupPrefabs[powerupIndex], new Vector2(randomX, 5.5f), powerupPrefabs[powerupIndex].transform.rotation);            
+            PowerUp pController = myPowerup.GetComponent<PowerUp>();
+            pController.speed = Random.Range(7.0f, 15.0f);
+        }
+    }
+
     void Awake()
     {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("GameMaster");
@@ -100,4 +120,44 @@ public class GameMaster : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         
     }    
+
+    public void startPowerupSpawner(){
+        spawner = SpawnPowerup();
+        StartCoroutine(spawner);
+    }
+
+    public void stopPowerupSpawner(){
+        StopCoroutine(spawner);
+    }
+
+    public void activatePowerup(string powerupType, float duration, float amount){
+        Debug.Log("Activate " + powerupType + " duration " + duration + " for " + amount);
+        if(powerupType == "bigpaddle"){
+            GameObject paddleObject = GameObject.FindGameObjectWithTag("Player");
+            //paddleObject
+            paddleObject.transform.localScale = new Vector2(paddleObject.transform.localScale.x * amount, paddleObject.transform.localScale.y);
+            object[] deactivateParams = new object[3]{powerupType, duration, amount};
+            StartCoroutine(DeactivatePowerup(deactivateParams));
+        }
+
+
+    }
+
+    IEnumerator DeactivatePowerup(object[] dParams){
+        string powerupType = (string)dParams[0];
+        float duration = (float)dParams[1];        
+        float amount = (float)dParams[2];
+        yield return new WaitForSeconds(duration);
+        //undo the powerup
+        if(powerupType == "bigpaddle"){
+            GameObject paddleObject = GameObject.FindGameObjectWithTag("Player");
+            paddleObject.transform.localScale = new Vector2(paddleObject.transform.localScale.x / amount, paddleObject.transform.localScale.y);
+        }
+
+
+    }
+
+
+
+
 }
