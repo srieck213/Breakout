@@ -15,10 +15,16 @@ public class GameMaster : MonoBehaviour
     public Text livesText;
     public Text scoreText;
     public Text endLevelText;
-    public float powerupDelay = 1.0f;
+    public float powerupDelay = 5.0f;
     public GameObject[] powerupPrefabs;
     private IEnumerator spawner;
     private bool wonGame = false;
+    private AudioSource playerAudio;
+    public AudioClip winSound;
+    public AudioClip loseSound;
+    private bool lostGame = false;
+    
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,21 +32,28 @@ public class GameMaster : MonoBehaviour
         livesText.text = "Lives: " + playerLives;
         scoreText.text = "Score: " + playerScore;    
         endLevelText.enabled = false;
+        playerAudio = GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
     void Update()
+    {   if(lostGame)
     {
-        
+        return;
+    }
         livesText.text = "Lives: " + playerLives;
         scoreText.text = "Score: " + playerScore;
-        
+    
         
         if (playerLives <= 0)
         {
+            lostGame = true;
             SceneManager.LoadScene("LoseScene");
-        }
+            playerAudio.PlayOneShot(loseSound, 1.0f);     
 
+        }
+        
         if (!wonGame && playerPoints >= levelPoints[currentLevel - 1])
         {
             endLevelText.enabled = true;
@@ -52,24 +65,48 @@ public class GameMaster : MonoBehaviour
             bController.ballLaunched = false;
 
             if(currentLevel == 1){
-                endLevelText.text = "Grammar School Complete";
+                endLevelText.text = "You passed entrance exams! Now on to Freshman year!";
+    
+
             }
             else if(currentLevel == 2){
-                endLevelText.text = "Middle School Complete";
+                endLevelText.text = "You made it through Freshman year! Are you ready to be a Sophomore?";
             }
             else if(currentLevel == 3){
-                endLevelText.text = "High School Complete";
+                endLevelText.text = "Sophmore year complete! But can you handle Junior classes?";
             }
             else if(currentLevel == 4){
-                endLevelText.text = "College Complete";
+                endLevelText.text = "Junior year complete! So close to that degree";
             }
             else{
                 SceneManager.LoadScene("WinScene");
                 wonGame = true;
+                playerAudio.PlayOneShot(winSound, 1.0f); 
             }
             stopPowerupSpawner();
             Invoke("IncrementLevel", 3);           
         }
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            IncrementLevel();
+        }
+        else if (Input.GetKeyDown(KeyCode.G))
+        {
+            lostGame = true;
+            SceneManager.LoadScene("LoseScene");
+            playerAudio.PlayOneShot(loseSound, 1.0f);
+        }
+        else if (Input.GetKeyDown(KeyCode.H))
+        {
+            SceneManager.LoadScene("StartMenu");
+        }
+        else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Y))
+        {
+            SceneManager.LoadScene("WinScene");
+            playerAudio.PlayOneShot(winSound, 1.0f); 
+        }
+      
 
     }
 
@@ -95,7 +132,7 @@ public class GameMaster : MonoBehaviour
     IEnumerator SpawnPowerup(){
         while(true){
             yield return new WaitForSeconds(powerupDelay);
-            powerupDelay = Random.Range(1.0f, 3.0f);
+            powerupDelay = Random.Range(5.0f, 10.0f);
             int powerupIndex = 0;
             if(powerupPrefabs.Length > 1){ 
                 powerupIndex = Random.Range(0, powerupPrefabs.Length - 1);
@@ -104,7 +141,7 @@ public class GameMaster : MonoBehaviour
             string powerupName = powerupPrefabs[powerupIndex].name;            
             GameObject myPowerup = Instantiate(powerupPrefabs[powerupIndex], new Vector2(randomX, 5.5f), powerupPrefabs[powerupIndex].transform.rotation);            
             PowerUp pController = myPowerup.GetComponent<PowerUp>();
-            pController.speed = Random.Range(7.0f, 15.0f);
+            pController.speed = Random.Range(5.0f, 10.0f);
         }
     }
 

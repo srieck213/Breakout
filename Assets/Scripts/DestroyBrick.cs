@@ -10,7 +10,10 @@ public class DestroyBrick : MonoBehaviour
     public SpriteRenderer brickSprite;
     public float brickValue;
     public bool doesExplode = false;
-    public float blastRadius = 5.0f;
+    public float blastRadius = 1.0f;
+    
+
+
 
     public GameMaster gameMaster;
 
@@ -35,21 +38,20 @@ public class DestroyBrick : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         numberOfHits++;
-        if(numberOfHits < maxHits){
-            brickSprite.color = Color.magenta;
-        }
-        if(other.gameObject.CompareTag("Ball")){
-            BallController bControl = other.gameObject.GetComponent<BallController>();            
-            bControl.lastCollision = Time.realtimeSinceStartup;
-            //Debug.Log("Last Collision: " + bControl.lastCollision);
-        }
+        brickSprite.color = Color.magenta;
+       
+        
+        
 
         if (numberOfHits >= maxHits)
         {
             gameMaster.playerPoints = gameMaster.playerPoints + brickValue;  
             gameMaster.playerScore = gameMaster.playerScore + brickValue;
 
+             
+            
             //Debug.Log("player points " + gameMaster.playerPoints);        
+            
             if(doesExplode){
                 GameObject[] brickList = GameObject.FindGameObjectsWithTag ("Brick");
         
@@ -67,13 +69,10 @@ public class DestroyBrick : MonoBehaviour
                     }                    
                 }                
             }else{
-                Invoke("DestroyDelayed", 0.05f);
+                Destroy(this.gameObject);
+               
             }
         }
-    }
-
-    void DestroyDelayed(){
-        Destroy(this.gameObject);
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

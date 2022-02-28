@@ -3,7 +3,10 @@ guid: 0aa6a0df36398e54fb9925f9406d8a04
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - brickSprite: {instanceID: 0}
+  - breakSound: {fileID: 8300000, guid: 19f89c6e740e7447f9e12a8310d3e973, type: 3}
+  - gameMaster: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

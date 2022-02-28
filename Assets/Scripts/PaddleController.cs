@@ -6,11 +6,15 @@ public class PaddleController : MonoBehaviour
 {
     public float playerInput;
     public float paddleSpeed;
+    private AudioSource playerAudio;
+    public AudioClip powerSound;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerAudio = GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
@@ -24,7 +28,7 @@ public class PaddleController : MonoBehaviour
     {
         if(other.CompareTag("PowerUp")){
             PowerUp power = other.gameObject.GetComponent<PowerUp>();
-
+            playerAudio.PlayOneShot(powerSound, 1.0f);
             Debug.Log("powerup name " + other.gameObject.name);
 
             GameObject gObject = GameObject.FindGameObjectWithTag("GameMaster");

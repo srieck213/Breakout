@@ -3,7 +3,13 @@ guid: b5e1629cb2d6d1249ae799edba3db6a8
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - bController: {instanceID: 0}
+  - livesText: {fileID: 2715906559983002270, guid: a271c952d7b676b418de821c3bd663d8, type: 3}
+  - scoreText: {fileID: 2878910299993758869, guid: 12c35a56613dc5b4087bc4eb576addce, type: 3}
+  - endLevelText: {instanceID: 0}
+  - winSound: {fileID: 8300000, guid: 2667a0a008b044e218b63df62e2be749, type: 3}
+  - loseSound: {fileID: 8300000, guid: dc6614beca09347ec9b258f12d154bdd, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

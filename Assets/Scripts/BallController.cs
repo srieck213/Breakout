@@ -16,12 +16,21 @@ public class BallController : MonoBehaviour
     public float maximumSpeed = 5.7f;
     public float lastCollision;
     public GameObject thePaddle;
+    private AudioSource playerAudio;
+    public AudioClip defeatSound;
+    public AudioClip bounceSound;
+    public AudioClip breakSound;
+    public AudioClip explodeSound;
+    
+    
 
     // Start is called before the first frame update
     void Start()
     {
         ballRigidbody = GetComponent<Rigidbody2D>();
-        lastCollision = Time.realtimeSinceStartup;        
+        lastCollision = Time.realtimeSinceStartup;     
+        playerAudio = GetComponent<AudioSource>();
+         
     }
 
     void Awake(){
@@ -43,6 +52,13 @@ public class BallController : MonoBehaviour
         if(!ballLaunched){
             transform.position = new Vector2(thePaddle.transform.position.x, transform.position.y);            
         }
+        if  (Input.GetKeyDown(KeyCode.R))
+        {
+            ballRigidbody.velocity = Vector3.zero;
+            transform.position = startPosition;
+            ballLaunched = false;
+            gameMaster.stopPowerupSpawner(); 
+        }
 
     }
 
@@ -59,6 +75,32 @@ public class BallController : MonoBehaviour
             }
         }
     }
+    private void OnCollisionEnter2D(Collision2D other)
+    {   if(other.gameObject.CompareTag("Brick"))
+        {
+        DestroyBrick dBrick = other.gameObject.GetComponent<DestroyBrick>();
+            if(dBrick.doesExplode)
+            {
+            playerAudio.PlayOneShot(explodeSound, 1.0f);  
+            }
+            else if(dBrick.maxHits <= 0)
+            { 
+            playerAudio.PlayOneShot(breakSound, 1.0f);
+            }
+            else if(dBrick.numberOfHits > 0)
+            {
+            playerAudio.PlayOneShot(breakSound, 1.0f);
+            }
+            else 
+            {
+            playerAudio.PlayOneShot(bounceSound, 1.0f);
+            }
+        }
+        else if(other.gameObject.CompareTag("Player")) 
+        {
+            playerAudio.PlayOneShot(bounceSound, 1.0f);
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -68,7 +110,8 @@ public class BallController : MonoBehaviour
             gameMaster.playerLives = gameMaster.playerLives-1;
             transform.position = startPosition;
             ballLaunched = false;
-            gameMaster.stopPowerupSpawner();              
+            gameMaster.stopPowerupSpawner(); 
+            playerAudio.PlayOneShot(defeatSound, 1.0f);             
         }        
     }
 
