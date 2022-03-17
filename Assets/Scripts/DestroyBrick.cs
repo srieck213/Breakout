@@ -66,6 +66,8 @@ public class DestroyBrick : MonoBehaviour
                         Debug.Log("destroying brick");
                         
                         Destroy(aBrick.gameObject, 0.1f);
+                        gameMaster.playerPoints = gameMaster.playerPoints + 1;
+                        gameMaster.playerScore = gameMaster.playerScore + 1;
                     }                    
                 }                
             }else{

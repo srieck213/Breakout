@@ -53,11 +53,11 @@ MonoBehaviour:
   - 21
   - 19
   playerLives: 5
-  currentLevel: 5
+  currentLevel: 3
   bController: {fileID: 0}
-  livesText: {fileID: 0}
-  scoreText: {fileID: 0}
-  endLevelText: {fileID: 0}
+  livesText: {fileID: 2715906559983002270, guid: a271c952d7b676b418de821c3bd663d8, type: 3}
+  scoreText: {fileID: 2878910299993758869, guid: 12c35a56613dc5b4087bc4eb576addce, type: 3}
+  endLevelText: {fileID: 2503462573394695679, guid: 498606e9604f73f46b6430f47bcdd50a, type: 3}
   powerupDelay: 1
   powerupPrefabs:
   - {fileID: 2402506169958696359, guid: 1d7ceccd49ab061418fdcdf5c780198c, type: 3}

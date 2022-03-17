@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -3439467132431950134}
   m_Layer: 0
   m_Name: Paddle
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,6 +102,7 @@ MonoBehaviour:
   playerInput: 0
   paddleSpeed: 10
   powerSound: {fileID: 8300000, guid: 0c008ee3ee72a4362a35be25fa5de043, type: 3}
+  badSound: {fileID: 8300000, guid: 5fdb13d3756c84fecac96f5a2d124370, type: 3}
 --- !u!61 &7582688935089562991
 BoxCollider2D:
   m_ObjectHideFlags: 0

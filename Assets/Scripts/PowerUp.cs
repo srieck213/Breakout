@@ -27,6 +27,9 @@ public class PowerUp : MonoBehaviour
         else if(this.gameObject.name.IndexOf("ExtraLife") >= 0){
             powerupType = "extralife";
         }
+        else if(this.gameObject.name.IndexOf("DecreaseLife") >= 0){
+            powerupType = "decreaselife";
+        }
     }
 
     // Update is called once per frame

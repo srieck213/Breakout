@@ -133,11 +133,10 @@ public class GameMaster : MonoBehaviour
         while(true){
             yield return new WaitForSeconds(powerupDelay);
             powerupDelay = Random.Range(5.0f, 10.0f);
-            int powerupIndex = 0;
-            if(powerupPrefabs.Length > 1){ 
-                powerupIndex = Random.Range(0, powerupPrefabs.Length - 1);
-            }
+            int powerupIndex = Random.Range(0, powerupPrefabs.Length);
+
             float randomX = Random.Range(-10.0f, 10.0f);
+            Debug.Log("powerup index " + powerupIndex);
             string powerupName = powerupPrefabs[powerupIndex].name;            
             GameObject myPowerup = Instantiate(powerupPrefabs[powerupIndex], new Vector2(randomX, 5.5f), powerupPrefabs[powerupIndex].transform.rotation);            
             PowerUp pController = myPowerup.GetComponent<PowerUp>();
@@ -176,6 +175,39 @@ public class GameMaster : MonoBehaviour
             object[] deactivateParams = new object[3]{powerupType, duration, amount};
             StartCoroutine(DeactivatePowerup(deactivateParams));
         }
+        else if (powerupType == "extralife")
+        {
+            playerLives++;
+        }
+        else if (powerupType == "decreaselife")
+        {
+            playerLives--;
+        }
+         else if(powerupType == "smallpaddle"){
+            GameObject paddleObject = GameObject.FindGameObjectWithTag("Player");
+            //paddleObject
+            paddleObject.transform.localScale = new Vector2(paddleObject.transform.localScale.x / amount, paddleObject.transform.localScale.y);
+            object[] deactivateParams = new object[3]{powerupType, duration, amount};
+            StartCoroutine(DeactivatePowerup(deactivateParams));
+         }
+         else if(powerupType == "increasespeed")
+         {
+           GameObject gObject = GameObject.FindGameObjectWithTag("Ball");  
+           BallController bController = gObject.GetComponent<BallController>();
+           bController.maximumSpeed += amount;
+           bController.minimumSpeed += amount;
+           object[] deactivateParams = new object[3]{powerupType, duration, amount};
+           StartCoroutine(DeactivatePowerup(deactivateParams));
+         }
+          else if(powerupType == "decreasespeed")
+         {
+           GameObject gObject = GameObject.FindGameObjectWithTag("Ball");  
+           BallController bController = gObject.GetComponent<BallController>();
+           bController.maximumSpeed -= amount;
+           bController.minimumSpeed -= amount;
+           object[] deactivateParams = new object[3]{powerupType, duration, amount};
+           StartCoroutine(DeactivatePowerup(deactivateParams));
+         }
 
 
     }
@@ -189,6 +221,24 @@ public class GameMaster : MonoBehaviour
         if(powerupType == "bigpaddle"){
             GameObject paddleObject = GameObject.FindGameObjectWithTag("Player");
             paddleObject.transform.localScale = new Vector2(paddleObject.transform.localScale.x / amount, paddleObject.transform.localScale.y);
+        }
+        else if(powerupType == "smallpaddle"){
+            GameObject paddleObject = GameObject.FindGameObjectWithTag("Player");
+            paddleObject.transform.localScale = new Vector2(paddleObject.transform.localScale.x * amount, paddleObject.transform.localScale.y);
+        }
+        else if(powerupType == "increasespeed")
+        {
+            GameObject gObject = GameObject.FindGameObjectWithTag("Ball");  
+            BallController bController = gObject.GetComponent<BallController>();
+            bController.maximumSpeed -= amount;
+            bController.minimumSpeed -= amount;
+        }
+        else if(powerupType == "decreasespeed")
+        {
+            GameObject gObject = GameObject.FindGameObjectWithTag("Ball");  
+            BallController bController = gObject.GetComponent<BallController>();
+            bController.maximumSpeed += amount;
+            bController.minimumSpeed += amount;
         }
 
 
